@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "dataset_version": 2,
+  "updated": "2026-08-13T19:00:00Z",
+  "organization": "Irvine Disaster Emergency Communications",
+  "defaults": {
+    "orientation_accuracy_deg": 5
+  },
+  "sites": [
+    {
+      "id": "tomato-springs",
+      "name": "Tomato Springs",
+      "latitude": 33.70254,
+      "longitude": -117.71079,
+      "elevation_m": 192,
+      "radios": [
+        {
+          "aredn_name": "N6IPD-IDEC-R5AC-Lite-Tomato-Relay-Sector",
+          "band_ghz": 5,
+          "channel": 168,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket 5AC Lite",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 19,
+            "beamwidth_deg": 120,
+            "center_azimuth_deg": 190,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "irvine-high-school",
+      "name": "Irvine High School",
+      "latitude": 33.70115,
+      "longitude": -117.78250,
+      "elevation_m": 30,
+      "radios": [
+        {
+          "aredn_name": "N6IPD-IDEC-R5AC-Lite-IHS-Sector",
+          "band_ghz": 5,
+          "channel": 182,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket 5AC Lite",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 19,
+            "beamwidth_deg": 120,
+            "center_azimuth_deg": 85,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 30
+          }
+        }
+      ]
+    },
+    {
+      "id": "signal-peak",
+      "name": "Signal Peak",
+      "latitude": 33.60636,
+      "longitude": -117.81089,
+      "elevation_m": 333,
+      "radios": [
+        {
+          "aredn_name": "N6IPD-IDEC-R5AC-Lite-SignalPk-Relay-Sector",
+          "band_ghz": 5,
+          "channel": 178,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket 5AC Lite",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 19,
+            "beamwidth_deg": 120,
+            "center_azimuth_deg": 7,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 10
+          }
+        },
+        {
+          "aredn_name": "N6IPD-IDEC-RM5-SignalPk-Relay-Sector-NW",
+          "band_ghz": 5,
+          "channel": 174,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket M5 XW",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 19,
+            "beamwidth_deg": 120,
+            "center_azimuth_deg": 285,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "quail-hill",
+      "name": "Quail Hill",
+      "latitude": 33.6363,
+      "longitude": -117.772878,
+      "elevation_m": 185,
+      "radios": [
+        {
+          "aredn_name": "N6IPD-IDEC-R5AC-Lite-Quail-Relay-Sector",
+          "band_ghz": 5,
+          "channel": 176,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket 5AC Lite",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 19,
+            "beamwidth_deg": 120,
+            "center_azimuth_deg": 5,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "city-hall",
+      "name": "City Hall",
+      "latitude": 33.68619,
+      "longitude": -117.82611,
+      "elevation_m": 140,
+      "radios": [
+        {
+          "aredn_name": "N6IPD-IDEC-RM5-Sector-CityHall",
+          "band_ghz": 5,
+          "channel": 172,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket M5 XW",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 19,
+            "beamwidth_deg": 120,
+            "center_azimuth_deg": 90,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 10
+          }
+        }
+      ]
+    }
+  ]
+}
