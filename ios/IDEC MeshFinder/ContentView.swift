@@ -7,32 +7,14 @@ struct ContentView: View {
     @State private var motionManager = MotionPitchManager()
 
     var body: some View {
-        Group {
-            if horizontalSizeClass == .compact {
-                NavigationStack {
-                    CompactSiteListView(
-                        viewModel: viewModel,
-                        locationManager: locationManager,
-                        motionManager: motionManager,
-                        userLocation: locationManager.location
-                    )
-                    .navigationTitle("Mesh Finder")
-                    .navigationBarTitleDisplayMode(.inline)
-                }
+        GeometryReader { proxy in
+            if proxy.size.width > proxy.size.height {
+                FinderLandscapeView(
+                    viewModel: viewModel,
+                    locationManager: locationManager
+                )
             } else {
-                NavigationSplitView {
-                    SiteListView(
-                        viewModel: viewModel,
-                        userLocation: locationManager.location
-                    )
-                    .navigationTitle("Mesh Finder")
-                } detail: {
-                    AimingDetailView(
-                        viewModel: viewModel,
-                        locationManager: locationManager,
-                        motionManager: motionManager
-                    )
-                }
+                portraitView
             }
         }
         .task {
@@ -40,6 +22,36 @@ struct ContentView: View {
             viewModel.start()
             locationManager.start()
             motionManager.start()
+        }
+    }
+
+    @ViewBuilder
+    private var portraitView: some View {
+        if horizontalSizeClass == .compact {
+            NavigationStack {
+                CompactSiteListView(
+                    viewModel: viewModel,
+                    locationManager: locationManager,
+                    motionManager: motionManager,
+                    userLocation: locationManager.location
+                )
+                .navigationTitle("Mesh Finder")
+                .navigationBarTitleDisplayMode(.inline)
+            }
+        } else {
+            NavigationSplitView {
+                SiteListView(
+                    viewModel: viewModel,
+                    userLocation: locationManager.location
+                )
+                .navigationTitle("Mesh Finder")
+            } detail: {
+                AimingDetailView(
+                    viewModel: viewModel,
+                    locationManager: locationManager,
+                    motionManager: motionManager
+                )
+            }
         }
     }
 }
@@ -74,7 +86,7 @@ struct CompactSiteListView: View {
                     .listRowBackground(AppPalette.rowBackground(index))
                 }
             } header: {
-                SectionHeaderView(title: "Fixed Sites")
+                SectionHeaderView(title: "Relay Sites")
             }
 
             Section {
@@ -119,7 +131,7 @@ struct SiteListView: View {
                     .listRowBackground(AppPalette.rowBackground(index))
                 }
             } header: {
-                SectionHeaderView(title: "Fixed Sites")
+                SectionHeaderView(title: "Relay Sites")
             }
 
             Section {

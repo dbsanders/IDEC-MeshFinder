@@ -1,6 +1,7 @@
 # Xcode per-user data
 xcuserdata/
 *.xcuserstate
+update-s3.sh
 
 # macOS
 .DS_Store

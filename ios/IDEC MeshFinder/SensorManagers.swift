@@ -1,6 +1,7 @@
 import CoreLocation
 import CoreMotion
 import Foundation
+import UIKit
 
 @Observable
 final class LocationHeadingManager: NSObject, CLLocationManagerDelegate {
@@ -22,7 +23,20 @@ final class LocationHeadingManager: NSObject, CLLocationManagerDelegate {
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.distanceFilter = 2
         manager.headingFilter = 1
+        updateHeadingOrientation()
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deviceOrientationDidChange),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
         authorizationStatus = manager.authorizationStatus
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        UIDevice.current.endGeneratingDeviceOrientationNotifications()
     }
 
     func start() {
@@ -74,6 +88,34 @@ final class LocationHeadingManager: NSObject, CLLocationManagerDelegate {
             locationError = "Location access is restricted on this device."
         @unknown default:
             locationError = "Location authorization is unavailable."
+        }
+    }
+
+    @objc private func deviceOrientationDidChange() {
+        updateHeadingOrientation()
+    }
+
+    private func updateHeadingOrientation() {
+        guard let headingOrientation = CLDeviceOrientation(deviceOrientation: UIDevice.current.orientation) else {
+            return
+        }
+        manager.headingOrientation = headingOrientation
+    }
+}
+
+private extension CLDeviceOrientation {
+    init?(deviceOrientation: UIDeviceOrientation) {
+        switch deviceOrientation {
+        case .portrait:
+            self = .portrait
+        case .portraitUpsideDown:
+            self = .portraitUpsideDown
+        case .landscapeLeft:
+            self = .landscapeLeft
+        case .landscapeRight:
+            self = .landscapeRight
+        default:
+            return nil
         }
     }
 }
