@@ -153,6 +153,6 @@ final class MotionPitchManager {
 
     static func aimElevationDegrees(gravityZ: Double) -> Double {
         let clampedZ = min(1, max(-1, gravityZ))
-        return asin(-clampedZ) * 180 / .pi
+        return asin(clampedZ) * 180 / .pi
     }
 }

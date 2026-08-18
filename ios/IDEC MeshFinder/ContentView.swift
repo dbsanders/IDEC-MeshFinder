@@ -65,7 +65,7 @@ struct CompactSiteListView: View {
     var body: some View {
         List {
             AppHeaderView()
-                .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 12, trailing: 16))
+                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 .listRowBackground(Color.clear)
 
             Section {
@@ -115,7 +115,7 @@ struct SiteListView: View {
     var body: some View {
         List(selection: $viewModel.selectedSiteID) {
             AppHeaderView()
-                .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 12, trailing: 16))
+                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 .listRowBackground(Color.clear)
 
             Section {
@@ -169,11 +169,11 @@ struct SectionHeaderView: View {
 
 struct AppHeaderView: View {
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 12) {
             Image("IDECCircle")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 66, height: 66)
+                .frame(width: 48, height: 48)
                 .clipShape(Circle())
                 .overlay {
                     Circle()
@@ -184,15 +184,15 @@ struct AppHeaderView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text("IDEC Mesh Node Finder")
-                    .font(.title3.weight(.bold))
+                    .font(.headline.weight(.bold))
                     .foregroundStyle(.white)
                 Text("Aim and connect nodes to IDEC relay sites")
-                    .font(.subheadline)
+                    .font(.caption)
                     .foregroundStyle(.white.opacity(0.84))
             }
         }
-        .padding(.vertical, 12)
-        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: 8)
@@ -313,18 +313,9 @@ struct AimingDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 if let site = viewModel.selectedSite, let radio = viewModel.selectedRadio {
-                    header(radio: radio)
-                    radioPicker(site: site)
+                    radioHeader(site: site, selectedRadio: radio)
                     if let solution {
                         GuidancePanel(solution: solution)
-                        SensorPanel(
-                            solution: solution,
-                            currentHeading: currentHeading,
-                            currentPitch: motionManager.pitchDeg,
-                            headingAccuracy: locationManager.headingAccuracyDeg,
-                            altitudeAccuracy: locationManager.altitudeAccuracyM,
-                            usingTrueHeading: locationManager.trueHeadingDeg != nil
-                        )
                         SectorPanel(solution: solution, radio: radio, dataset: viewModel.dataset)
                     } else {
                         ContentUnavailableView(
@@ -335,6 +326,16 @@ struct AimingDetailView: View {
                         .frame(maxWidth: .infinity, minHeight: 240)
                     }
                     RadioConfigPanel(radio: radio)
+                    if let solution {
+                        SensorPanel(
+                            solution: solution,
+                            currentHeading: currentHeading,
+                            currentPitch: motionManager.pitchDeg,
+                            headingAccuracy: locationManager.headingAccuracyDeg,
+                            altitudeAccuracy: locationManager.altitudeAccuracyM,
+                            usingTrueHeading: locationManager.trueHeadingDeg != nil
+                        )
+                    }
                 } else {
                     ContentUnavailableView("No site selected", systemImage: "antenna.radiowaves.left.and.right")
                 }
@@ -356,23 +357,78 @@ struct AimingDetailView: View {
         }
     }
 
-    private func header(radio: MeshRadio) -> some View {
+    private func radioHeader(site: MeshSite, selectedRadio: MeshRadio) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(radio.arednName)
-                .font(.subheadline)
+            Text("Node")
+                .font(.caption.weight(.bold))
+                .textCase(.uppercase)
                 .foregroundStyle(AppPalette.textSecondary)
-                .textSelection(.enabled)
+
+            if site.radios.count > 1 {
+                Menu {
+                    ForEach(site.radios) { radio in
+                        Button {
+                            viewModel.selectRadio(radio)
+                        } label: {
+                            Label(
+                                radio.arednName,
+                                systemImage: radio.id == selectedRadio.id ? "checkmark.circle.fill" : "antenna.radiowaves.left.and.right"
+                            )
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(selectedRadio.arednName)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(AppPalette.textPrimary)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.8)
+
+                            Text(radioMenuTitle(selectedRadio))
+                                .font(.caption)
+                                .foregroundStyle(AppPalette.textSecondary)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.down.circle.fill")
+                            .font(.title3)
+                            .foregroundStyle(AppPalette.teal)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(AppPalette.panelBackground, in: RoundedRectangle(cornerRadius: 8))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(AppPalette.teal.opacity(0.22), lineWidth: 1)
+                    }
+                }
+                .buttonStyle(.plain)
+            } else {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(selectedRadio.arednName)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(AppPalette.textPrimary)
+                        .textSelection(.enabled)
+
+                    Text(radioMenuTitle(selectedRadio))
+                        .font(.caption)
+                        .foregroundStyle(AppPalette.textSecondary)
+                }
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(AppPalette.panelBackground, in: RoundedRectangle(cornerRadius: 8))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(.quaternary, lineWidth: 1)
+                }
+            }
         }
     }
 
-    private func radioPicker(site: MeshSite) -> some View {
-        Picker("Radio", selection: $viewModel.selectedRadioID) {
-            ForEach(site.radios) { radio in
-                Text("Ch \(radio.channel) - \(radio.antenna.centerAzimuthDeg.formatted(.number.precision(.fractionLength(0)))) degrees")
-                    .tag(Optional(radio.id))
-            }
-        }
-        .pickerStyle(.segmented)
+    private func radioMenuTitle(_ radio: MeshRadio) -> String {
+        "Ch \(radio.channel) • \(radio.mode.rawValue) • \(Formatters.degrees(radio.antenna.centerAzimuthDeg))"
     }
 }
 
@@ -415,10 +471,10 @@ struct SensorPanel: View {
     private var headingWarning: String? {
         guard let headingAccuracy else { return "Compass accuracy unavailable" }
         if headingAccuracy > 20 {
-            return "Compass accuracy is poor near metal, vehicles, towers, antennas, or electrical equipment."
+            return "Poor compass accuracy. Move away from metal, vehicles, towers, antennas, etc."
         }
         if headingAccuracy > 10 {
-            return "Compass accuracy is moderate; verify alignment before transmitting."
+            return "Compass accuracy is moderate; use the node's WiFi Signal tool to be more precise."
         }
         return nil
     }
@@ -532,6 +588,7 @@ struct DatabaseStatusView: View {
             if let dataset = viewModel.dataset {
                 VStack(alignment: .leading, spacing: 7) {
                     statusRow("Sites", "\(dataset.sites.count)")
+                    statusRow("Mesh Nodes", "\(dataset.sites.reduce(0) { $0 + $1.radios.count })")
                     statusRow("Version", "\(dataset.datasetVersion)")
                     statusRow("Updated", dataset.updated.formatted(date: .abbreviated, time: .shortened))
                     statusRow("Source", viewModel.status.source.rawValue)
@@ -545,6 +602,7 @@ struct DatabaseStatusView: View {
             HStack {
                 refreshLabel
                 Spacer()
+
                 Button {
                     Task { await viewModel.checkForUpdates() }
                 } label: {
@@ -663,10 +721,7 @@ extension View {
 
 enum Formatters {
     static func distance(_ meters: Double) -> String {
-        if meters >= 1609.344 {
-            return "\((meters / 1609.344).formatted(.number.precision(.fractionLength(1)))) mi"
-        }
-        return "\(meters.formatted(.number.precision(.fractionLength(0)))) m"
+        "\((meters / 1609.344).formatted(.number.precision(.fractionLength(1)))) mi"
     }
 
     static func degrees(_ value: Double) -> String {

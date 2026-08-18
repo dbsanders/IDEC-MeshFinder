@@ -46,9 +46,9 @@ struct IDEC_MeshFinderTests {
     }
 
     @Test func motionAimElevationUsesScreenNormalAngle() {
-        #expect(MotionPitchManager.aimElevationDegrees(gravityZ: -1) == 90)
+        #expect(MotionPitchManager.aimElevationDegrees(gravityZ: -1) == -90)
         #expect(MotionPitchManager.aimElevationDegrees(gravityZ: 0) == 0)
-        #expect(MotionPitchManager.aimElevationDegrees(gravityZ: 1) == -90)
+        #expect(MotionPitchManager.aimElevationDegrees(gravityZ: 1) == 90)
     }
 
     @Test func computesKnownIrvineNavigationValues() throws {
