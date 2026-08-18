@@ -428,7 +428,7 @@ struct AimingDetailView: View {
     }
 
     private func radioMenuTitle(_ radio: MeshRadio) -> String {
-        "Ch \(radio.channel) • \(radio.mode.rawValue) • \(Formatters.degrees(radio.antenna.centerAzimuthDeg))"
+        "Ch \(radio.channel) • \(radio.mode.rawValue) • \(radio.antenna.type) azimuth \(Formatters.degrees(radio.antenna.centerAzimuthDeg))"
     }
 }
 
@@ -439,7 +439,7 @@ struct GuidancePanel: View {
         Grid(alignment: .leading, horizontalSpacing: 14, verticalSpacing: 14) {
             GridRow {
                 MetricCard(title: "Distance", value: Formatters.distance(solution.distanceM), systemImage: "point.topleft.down.curvedto.point.bottomright.up", accent: AppPalette.teal)
-                MetricCard(title: "Bearing", value: "\(Formatters.degrees(solution.bearingToSiteDeg)) true", systemImage: "safari", accent: AppPalette.blue)
+                MetricCard(title: "Bearing from you", value: "\(Formatters.degrees(solution.bearingToSiteDeg)) true", systemImage: "safari", accent: AppPalette.blue)
             }
             GridRow {
                 MetricCard(title: "Left / Right", value: correctionText(solution.horizontalCorrectionDeg, positive: "Right", negative: "Left"), systemImage: "arrow.left.and.right", accent: AppPalette.orange)
