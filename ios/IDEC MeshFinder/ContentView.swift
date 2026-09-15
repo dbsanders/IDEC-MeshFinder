@@ -35,8 +35,7 @@ struct ContentView: View {
                     motionManager: motionManager,
                     userLocation: locationManager.location
                 )
-                .navigationTitle("Mesh Finder")
-                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(.hidden, for: .navigationBar)
             }
         } else {
             NavigationSplitView {
