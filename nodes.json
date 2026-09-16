@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "dataset_version": 2,
-  "updated": "2026-08-13T19:00:00Z",
+  "dataset_version": 4,
+  "updated": "2026-09-15T19:00:00Z",
   "organization": "Irvine Disaster Emergency Communications",
   "defaults": {
     "orientation_accuracy_deg": 5
@@ -154,6 +154,24 @@
             "gain_dbi": 19,
             "beamwidth_deg": 120,
             "center_azimuth_deg": 90,
+            "electrical_downtilt_deg": 2,
+            "height_agl_m": 10
+          }
+        },
+        {
+          "aredn_name": "N6IPD-IDEC-RM5-RRm-to-LasLomas",
+          "band_ghz": 5,
+          "channel": 168,
+          "bandwidth_mhz": 10,
+          "mode": "Mesh",
+          "hardware": "Ubiquiti Rocket M5 XW",
+          "antenna": {
+            "manufacturer": "Ubiquiti",
+            "model": "AM-5G19-120",
+            "type": "sector",
+            "gain_dbi": 30,
+            "beamwidth_deg": 5,
+            "center_azimuth_deg": 182,
             "electrical_downtilt_deg": 2,
             "height_agl_m": 10
           }

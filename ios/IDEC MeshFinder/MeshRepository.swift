@@ -55,8 +55,7 @@ struct MeshRepository {
 
         for source in sources {
             do {
-                var request = URLRequest(url: source)
-                request.timeoutInterval = 12
+                let request = refreshRequest(for: source)
                 let (data, _) = try await URLSession.shared.data(for: request)
                 let dataset = try decoder.decode(MeshDataset.self, from: data)
                 try validator.validate(dataset, currentDataset: currentDataset)
@@ -68,6 +67,13 @@ struct MeshRepository {
         }
 
         throw lastError ?? URLError(.cannotConnectToHost)
+    }
+
+    func refreshRequest(for source: URL) -> URLRequest {
+        var request = URLRequest(url: source)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.timeoutInterval = 12
+        return request
     }
 
     func decode(_ data: Data, currentDataset: MeshDataset? = nil) throws -> MeshDataset {

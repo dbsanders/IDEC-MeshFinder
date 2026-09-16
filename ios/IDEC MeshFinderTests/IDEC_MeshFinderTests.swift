@@ -39,6 +39,15 @@ struct IDEC_MeshFinderTests {
         }
     }
 
+    @Test func refreshRequestBypassesLocalCache() throws {
+        let source = try #require(URL(string: "https://example.com/nodes.json"))
+        let request = MeshRepository().refreshRequest(for: source)
+
+        #expect(request.url == source)
+        #expect(request.cachePolicy == .reloadIgnoringLocalCacheData)
+        #expect(request.timeoutInterval == 12)
+    }
+
     @Test func angularDifferenceHandlesNorthWraparound() {
         #expect(NavigationMath.signedAngularDifferenceDegrees(from: 350, to: 10) == 20)
         #expect(NavigationMath.signedAngularDifferenceDegrees(from: 10, to: 350) == -20)
